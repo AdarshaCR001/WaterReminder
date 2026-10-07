@@ -19,7 +19,7 @@ class AnimationOverlay(QWidget):
         
         # Load and play the animation
         self.anim_label = QLabel()
-        self.movie = QMovie("avatar2.gif")
+        self.movie = QMovie("avatar.gif")
         self.anim_label.setMovie(self.movie)
         self.movie.start()
         layout.addWidget(self.anim_label, alignment=Qt.AlignmentFlag.AlignCenter)
