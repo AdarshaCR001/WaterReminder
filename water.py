@@ -25,9 +25,27 @@ class AnimationOverlay(QWidget):
         layout.addWidget(self.anim_label, alignment=Qt.AlignmentFlag.AlignCenter)
 
         # Create custom buttons
+        # Create custom buttons
         btn_layout = QHBoxLayout()
         btn_now = QPushButton("Drink Now")
         btn_later = QPushButton("Drink Later")
+        
+        # Apply black background and white text styling
+        button_style = """
+            QPushButton {
+                background-color: black;
+                color: white;
+                padding: 8px 16px;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #333333; /* Slightly lighter on hover */
+            }
+        """
+        btn_now.setStyleSheet(button_style)
+        btn_later.setStyleSheet(button_style)
+
         
         # Button actions
         btn_now.clicked.connect(self.drink_now)
@@ -63,9 +81,14 @@ class AnimationOverlay(QWidget):
         # Show the window again after the timer finishes
         print("Waking up from snooze...")
         self.show()
+        self.raise_()           # Brings window to the top of the GUI stack
+        self.activateWindow()   # Forces the OS to give it focus
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = AnimationOverlay()
     window.show()
+    window.raise_()             # Ensures it forces its way to the front on first launch
+    window.activateWindow()
     sys.exit(app.exec())
+
