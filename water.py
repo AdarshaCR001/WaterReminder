@@ -45,9 +45,8 @@ class AnimationOverlay(QWidget):
         self.snooze_timer.timeout.connect(self.wake_up)
 
     def drink_now(self):
-        # Closes the application completely
         print("Water drunk! Closing.")
-        self.close()
+        QApplication.quit()  # This fully terminates the application and removes the Dock icon
 
     def snooze(self):
         # Hide the window and start the 5-minute timer
