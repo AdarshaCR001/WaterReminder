@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QMovie
 
 class AnimationOverlay(QWidget):
@@ -26,23 +26,44 @@ class AnimationOverlay(QWidget):
 
         # Create custom buttons
         btn_layout = QHBoxLayout()
-        btn_continue = QPushButton("Continue")
-        btn_close = QPushButton("Close")
+        btn_now = QPushButton("Drink Now")
+        btn_later = QPushButton("Drink Later")
         
         # Button actions
-        btn_continue.clicked.connect(self.on_continue)
-        btn_close.clicked.connect(self.close)
+        btn_now.clicked.connect(self.drink_now)
+        btn_later.clicked.connect(self.snooze)
         
-        btn_layout.addWidget(btn_continue)
-        btn_layout.addWidget(btn_close)
+        btn_layout.addWidget(btn_now)
+        btn_layout.addWidget(btn_later)
         layout.addLayout(btn_layout)
 
         self.setLayout(layout)
 
-    def on_continue(self):
-        print("Continue action triggered")
-        # Add logic for what happens when continue is clicked
+        # Initialize the snooze timer
+        self.snooze_timer = QTimer(self)
+        self.snooze_timer.setSingleShot(True)  # Ensures the timer only runs once per click
+        self.snooze_timer.timeout.connect(self.wake_up)
+
+    def drink_now(self):
+        # Closes the application completely
+        print("Water drunk! Closing.")
         self.close()
+
+    def snooze(self):
+        # Hide the window and start the 5-minute timer
+        print("Snoozing for 5 minutes...")
+        self.hide() 
+        # 5 minutes = 5 * 60 seconds * 1000 milliseconds
+        self.snooze_timer.start(5 * 60 * 1000)
+        
+        # If you want to test it quickly without waiting 5 minutes, 
+        # comment the line above and uncomment the 5-second timer below:
+        # self.snooze_timer.start(5 * 1000)
+
+    def wake_up(self):
+        # Show the window again after the timer finishes
+        print("Waking up from snooze...")
+        self.show()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
